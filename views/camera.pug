@@ -5,3 +5,71 @@ html
   body
     h1 Hi Camera, access camera here!
     h2= message
+    .select
+      label(for="videoSource") Video Source:
+      select(id="videoSource")   
+    video(autoplay)
+    button Take Snapshot
+    canvas
+    
+  script.
+    let video = document.querySelector('video')
+    let canvas = window.canvas = document.querySelector('canvas')
+    let button = document.querySelector('button')
+    let videoSelect = document.querySelector('select#videoSource')
+    canvas.width = 480
+    canvas.height = 360
+    button.onclick = () => {
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      canvas.getContext('2d')
+        .drawImage(video, 0, 0, canvas.width, canvas.height)
+    }
+    
+        
+        
+    const gotDevices = (deviceInfos) => {
+      for(var i=0; i !== deviceInfos.length; i++) {
+        let deviceInfo = deviceInfos[i]
+        let option = document.createElement('option')
+        option.value = deviceInfo.deviceId
+        
+        if (deviceInfo.kind === 'videoinput') {
+          option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`
+          videoSelect.appendChild(option)
+        } else {
+          console.log('Found another kind of source/device:', deviceInfo)
+        }
+      }
+    }
+    
+    const getStream = () => {
+      if (window.stream) {
+        window.stream.getTracks().forEach(track => track.stop())
+      }
+      
+      let constraints = { 
+        audio: false, 
+        video: {
+          optional: [{
+            sourceId: videoSelect.value
+          }]
+        } 
+      }
+      navigator.mediaDevices.getUserMedia(constraints).then(gotStream).catch(handleError)
+    }
+    
+    
+    const gotStream = (stream) => {
+      window.stream = stream
+      video.srcObject = stream
+    }
+    
+    const handleError = (err) => {
+      console.log(`navigator.getUserMedia error: ${err}`)
+    }
+    
+
+    videoSelect.onchange = getStream
+    navigator.mediaDevices.enumerateDevices()
+      .then(gotDevices).then(getStream).catch(handleError)
