@@ -1,0 +1,13 @@
+doctype
+html
+  title QuePro | #{title}
+  head
+    block headContent
+    link(rel="stylesheet", type="text/css", href="/main.css")
+  body
+    .container
+      block bodyContent
+  script(type="application/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js")
+  script(type="application/javascript", src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js")  
+  block scriptsContent
+  

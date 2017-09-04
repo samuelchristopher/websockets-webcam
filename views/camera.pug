@@ -1,19 +1,15 @@
-doctype html
-html
-  head
-    title Camera
-  body
-    h1 Hi Camera, access camera here!
-    h2= message
-    h3= firebase
+extends base.pug
+
+block bodyContent
+    h1= title
+    h3 Camera takes pictures on command and sends them to controller
     .select
       label(for="videoSource") Video Source:
       select(id="videoSource")   
     video(autoplay)
     button Take Snapshot
     canvas
-  script(type="application/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js")
-  script(type="application/javascript", src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js")  
+block scriptsContent
   script.
     let video = document.querySelector('video')
     let canvas = window.canvas = document.querySelector('canvas')

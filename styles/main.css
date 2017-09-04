@@ -1,0 +1,41 @@
+/*html {
+  font-family: sans-serif;
+  background: #ccc;
+}*/
+
+body {
+  background: white;
+  font-family: sans-serif;
+  margin:0;
+}
+
+.container {
+  margin: 20px auto;
+  max-width: 700px;
+}
+
+.new-snap-container {
+  border: 1px solid deepskyblue;
+  padding: 10px;
+  margin: 10px 20px;
+}
+
+button.snap-btn {
+  background: deepskyblue;
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  /*margin: 10px;*/
+  display: block;
+}
+
+button:focus {
+  outline: none;
+}
+
+button.snap-btn:hover {
+  background: lightskyblue;
+  cursor: pointer;
+}

@@ -1,24 +1,24 @@
-doctype html
-html
-  head
-    title Controller
-  body
-    h1 Hi Controller, take a snap
-    h2= message
-    button.snap-btn Take Snap Shot
-    image.new-snap-container
+extends base.pug
+
+block bodyContent
+  h1= title
+  h3 Controller can be used to take remote snapshots
+  image.new-snap-container
+  button.snap-btn Take Snap Shot
     
-  script(type="application/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js")
+block scriptsContent
   script.
     let firebaseInstance = "#{firebase}"
     let socket = io.connect()  
     let snapButton = document.querySelector('.snap-btn')
     let newSnapContainer = document.querySelector('.new-snap-container')
+    let loading = true
     snapButton.onclick = () => {
       console.log('take a remote snap!')
       socket.emit('take a new snap')
       socket.on('new snap', (imageURL) => {
         console.log('from controller: i have received a new snap!', imageURL)
         newSnapContainer.src = imageURL
+        loading = false
       })
     }
