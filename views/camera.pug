@@ -5,13 +5,15 @@ html
   body
     h1 Hi Camera, access camera here!
     h2= message
+    h3= firebase
     .select
       label(for="videoSource") Video Source:
       select(id="videoSource")   
     video(autoplay)
     button Take Snapshot
     canvas
-    
+  script(type="application/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js")
+  script(type="application/javascript", src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js")  
   script.
     let video = document.querySelector('video')
     let canvas = window.canvas = document.querySelector('canvas')
@@ -73,3 +75,34 @@ html
     videoSelect.onchange = getStream
     navigator.mediaDevices.enumerateDevices()
       .then(gotDevices).then(getStream).catch(handleError)
+        
+    const convertCanvasToImage = (canvas) => {
+      let image = new Image()
+      image.src = canvas.toDataURL('image/png')
+      return image
+    }
+        
+    let socket = io.connect()
+    var config = {
+      apiKey: "AIzaSyBh76oXCLJpUTUhPKIi-KE6GW7KnXIBEWc",
+      authDomain: "websockets-webcam.firebaseapp.com",
+      databaseURL: "https://websockets-webcam.firebaseio.com",
+      projectId: "websockets-webcam",
+      storageBucket: "websockets-webcam.appspot.com",
+      messagingSenderId: "271757743205"
+    }
+    firebase.initializeApp(config)
+      
+    let storageRef = firebase.storage().ref('image')
+    const uploadImage = (canvas) => {
+      let message = canvas.toDataURL('image/png')
+      storageRef.putString(message, 'data_url').then(function(snapshot) {
+        socket.emit('image uploaded', snapshot.downloadURL)
+      });
+    }
+    socket.on('take a new snap', () => {
+      console.log('from camera: i have to take a new snap')
+      button.onclick()
+      //- let newSnap = convertCanvasToImage(canvas)
+      uploadImage(canvas)
+    })

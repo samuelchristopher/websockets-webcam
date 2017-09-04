@@ -5,3 +5,20 @@ html
   body
     h1 Hi Controller, take a snap
     h2= message
+    button.snap-btn Take Snap Shot
+    image.new-snap-container
+    
+  script(type="application/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js")
+  script.
+    let firebaseInstance = "#{firebase}"
+    let socket = io.connect()  
+    let snapButton = document.querySelector('.snap-btn')
+    let newSnapContainer = document.querySelector('.new-snap-container')
+    snapButton.onclick = () => {
+      console.log('take a remote snap!')
+      socket.emit('take a new snap')
+      socket.on('new snap', (imageURL) => {
+        console.log('from controller: i have received a new snap!', imageURL)
+        newSnapContainer.src = imageURL
+      })
+    }
