@@ -6,9 +6,9 @@ block bodyContent
     .select
       label(for="videoSource") Video Source:
       select(id="videoSource")   
-    video(autoplay)
-    button Take Snapshot
-    canvas
+    video(autoplay, class="new-snap-container")
+    button.snap-btn Take Snapshot
+    canvas.new-snap-container
 block scriptsContent
   script.
     let video = document.querySelector('video')

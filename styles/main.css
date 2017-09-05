@@ -7,6 +7,8 @@ body {
   background: white;
   font-family: sans-serif;
   margin:0;
+  --main-color: #4170b6;
+  --light-color: #70a3ef;
 }
 
 .container {
@@ -15,13 +17,13 @@ body {
 }
 
 .new-snap-container {
-  border: 1px solid deepskyblue;
+  border: 1px solid var(--main-color);
   padding: 10px;
   margin: 10px 20px 20px 0;
 }
 
 button.snap-btn {
-  background: deepskyblue;
+  background: var(--main-color);
   border: none;
   color: white;
   font-size: 20px;
@@ -36,7 +38,7 @@ button:focus {
 }
 
 button.snap-btn:hover {
-  background: lightskyblue;
+  background: var(--light-color);
   cursor: pointer;
 }
 

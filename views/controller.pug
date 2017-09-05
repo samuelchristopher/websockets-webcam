@@ -3,6 +3,7 @@ extends base.pug
 block bodyContent
   h1= title
   h3 Controller can be used to take remote snapshots
+  h2.output
   canvas.new-snap-container
   button.snap-btn Take Snap Shot
   .images
@@ -15,14 +16,15 @@ block scriptsContent
     let snapButton = document.querySelector('.snap-btn')
     let newSnapContainer = document.querySelector('.new-snap-container')
     
-    const recognizeMainNumber = (source, original) => {
-      let mainNumber = document.createElement('canvas')
-      let mainNumberCtx = mainNumber.getContext('2d')
-      mainNumber.width = original.width
-      mainNumber.height = original.height
-      mainNumberCtx.drawImage(source, 70, 210, 260, 124, 21, 20, 220, 104)
-      Tesseract.recognize(mainNumber)
-        .then(re => console.log(re.text))
+    const recognizeMainNumber = (canvas) => {
+      let outputContainer = document.querySelector('.output')
+      let outputText = ''
+      Tesseract.recognize(newSnapContainer)
+        .then(re => {
+          outputText = re.text
+          outputContainer.innerHTML = outputText
+        })
+      
     }
 
     snapButton.onclick = () => {
@@ -37,4 +39,5 @@ block scriptsContent
       newSnapContainer.height = image.height
       newSnapContainer.getContext('2d').filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
       newSnapContainer.getContext('2d').drawImage(image, 0, 0)
+      recognizeMainNumber(newSnapContainer)
     })
