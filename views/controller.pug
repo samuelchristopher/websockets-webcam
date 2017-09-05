@@ -4,12 +4,12 @@ block bodyContent
   h1= title
   h3 Controller can be used to take remote snapshots
   h2.output
-  canvas.new-snap-container
+  img.new-snap-container
   button.snap-btn Take Snap Shot
   .images
     
 block scriptsContent
-  script(type="application/javascript", src="http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js")
+  script(type="application/javascript", src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js")
   script.
     let firebaseInstance = "#{firebase}"
     let socket = io.connect()  
@@ -32,12 +32,14 @@ block scriptsContent
       socket.emit('take a new snap')
     }
     socket.on('new image', (message) => {
-      let image = new Image()
+      console.log(message)
+      let image = document.querySelector('.new-snap-container')
       image.classList.add('filtered')
       image.src = message
-      newSnapContainer.width = image.width
-      newSnapContainer.height = image.height
-      newSnapContainer.getContext('2d').filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
-      newSnapContainer.getContext('2d').drawImage(image, 0, 0)
-      recognizeMainNumber(newSnapContainer)
+      let canvas = document.createElement('canvas')
+      canvas.width = image.width
+      canvas.height = image.height
+      canvas.getContext('2d').filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
+      canvas.getContext('2d').drawImage(image, 0, 0)
+      recognizeMainNumber(canvas)
     })
