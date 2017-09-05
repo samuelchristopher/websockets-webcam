@@ -29,6 +29,11 @@ io.sockets.on('connection', (socket) => {
     console.log('take a new snap please...')
   })
 
+  socket.on('new image', (image) => {
+    io.sockets.emit('new image', image)
+    console.log('new image incoming...')
+  })
+
   socket.on('image uploaded', (imageURL) => {
     io.sockets.emit('new snap', imageURL)
     console.log('new snap!')

@@ -28,20 +28,13 @@ block scriptsContent
     snapButton.onclick = () => {
       console.log('take a remote snap!')
       socket.emit('take a new snap')
-      socket.on('new snap', (imageURL) => {
-        console.log('from controller: i have received a new snap!', imageURL)
-        let img = new Image()
-        let canvas = document.querySelector('.new-snap-container')
-        let ctx = canvas.getContext('2d')
-        img.onload = () => {
-          canvas.width = img.width
-          canvas.height = img.height
-          ctx.filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
-          ctx.drawImage(img, 0, 0)
-        }
-        img.src = imageURL
-        //- newSnapContainer.src = imageURL
-        //- recognizeMainNumber(copy, canvas)
-      })
-      
     }
+    socket.on('new image', (message) => {
+      let image = new Image()
+      image.classList.add('filtered')
+      image.src = message
+      newSnapContainer.width = image.width
+      newSnapContainer.height = image.height
+      newSnapContainer.getContext('2d').filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
+      newSnapContainer.getContext('2d').drawImage(image, 0, 0)
+    })
