@@ -32,7 +32,6 @@ block scriptsContent
       socket.emit('take a new snap')
     }
     socket.on('new image', (message) => {
-      console.log(message)
       let image = document.querySelector('.new-snap-container')
       image.classList.add('filtered')
       image.src = message
