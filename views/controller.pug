@@ -10,12 +10,22 @@ block bodyContent
     
 block scriptsContent
   script(type="application/javascript", src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js")
+  script(type="application/javascript", src="https://www.gstatic.com/firebasejs/4.3.0/firebase-app.js")
+  script(type="application/javascript", src="https://www.gstatic.com/firebasejs/4.3.0/firebase-database.js")
   script.
     let firebaseInstance = "#{firebase}"
     let socket = io.connect()  
     let snapButton = document.querySelector('.snap-btn')
     let newSnapContainer = document.querySelector('.new-snap-container')
-    
+    let config = {
+      apiKey: "AIzaSyAIbdEm_m3IjYRm7zPYqkMFGY6CTKpegaY",
+      authDomain: "quepro-app.firebaseapp.com",
+      databaseURL: "https://quepro-app.firebaseio.com",
+      projectId: "quepro-app",
+      storageBucket: "quepro-app.appspot.com",
+      messagingSenderId: "1013803883791"
+    }
+    firebase.initializeApp(config)   
     const recognizeMainNumber = (canvas) => {
       let outputContainer = document.querySelector('.output')
       let outputText = ''
@@ -23,6 +33,9 @@ block scriptsContent
         .then(re => {
           outputText = re.text
           outputContainer.innerHTML = outputText
+          firebase.database().ref('/testRawData').set({
+            outputText
+          })
         })
       
     }
